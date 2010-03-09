@@ -91,7 +91,7 @@ module Receipt
     private
       
       def extract_pagenumber(args)
-        args.first.is_a?(Fixnum) || args.first.is_a?(Range) ? [args[0], args[1]] : [1, args[0]]
+        args.size == 1 ? [1, args[0]] : [args[0], args[1]]
       end
     
   end
