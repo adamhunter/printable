@@ -9,6 +9,8 @@ h3. Todo
 # Write example DSL
 # Fail the tests
 # Create basic DSL parser
-# Write adapter for API using Prawn
+# Write generator using prawn and pdftk
 # Test the f(ail) out of it
 # Make DSL generator app
+
+mac 10.6.2 pdftk installer: http://fredericiana.com/2010/03/01/pdftk-1-41-for-mac-os-x-10-6/
