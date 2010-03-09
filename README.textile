@@ -1,0 +1,14 @@
+h1. Receipt
+
+This is a gem that aims to provide simple PDF receipt generation for a model using a basic DSL. 
+The idea is to use a background image and tie an attribute from a model to a set of X-Y coordinates on the background.
+Ideally there will be a web based XY selector at some point that will help create the DSL for you.
+
+h3. Todo
+
+# Write example DSL
+# Fail the tests
+# Create basic DSL parser
+# Write adapter for API using Prawn
+# Test the f(ail) out of it
+# Make DSL generator app
