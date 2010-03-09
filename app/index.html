@@ -1,0 +1,48 @@
+<html>
+  <head>
+    <title>
+      Receipt Generator
+    </title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+    <style type="text/css">
+      body{
+        background:#eee;
+      }
+      #measure{
+        border: 0 none;
+        margin: 0;
+        padding: 0;
+        position:absolute;
+        right:0;
+        top: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <p>
+      <b>dpi:</b>
+      <input type="text" id="dpi" value="72" />
+    </p>
+    <p id="log"></p>
+    <img src="background.png" alt="background" id="measure" />
+    <script type="text/javascript">
+      jQuery(function($){
+        $('#measure').load(function(){
+          pxHeight = $('#measure').height()
+          pxWidth  = $('#measure').width()
+          pdfDpi   = 72
+        })
+        
+
+        $('#measure').bind('mousemove',function(e){ 
+          dpi      = parseInt($('#dpi').val())
+          dpiRatio = pdfDpi / dpi
+          x = parseInt((e.pageX - ($(window).width() - pxWidth)) * dpiRatio)
+          y = parseInt((pxHeight - e.pageY) * dpiRatio)
+          
+          $("#log").text("x: " + x + ", y: " + y); 
+        });
+      });
+    </script>
+  </body>
+</html>
