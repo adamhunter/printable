@@ -2,6 +2,10 @@ class Example
   
   prints_receiept
   
+  def id
+    125
+  end
+  
   def attributes
     {
       :name    => 'Receipt Example',

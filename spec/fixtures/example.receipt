@@ -1,4 +1,6 @@
-print do
+receipt do
+  
+  base 'pdfs'
 
   page 1, :name    => [20,  700],
           :address => [150, 700],
@@ -8,9 +10,6 @@ print do
           :phone   => [150, 660],
           :contact => [20,  640],
           :value   => [150, 640]
-          
-            
-  background 1, File.expand_path(File.join(File.dirname(__FILE__), 'spec', 'fixtures', 'example-bg.pdf'))
   
   page 2, :name    => [20,  700],
           :address => [150, 700],
@@ -20,6 +19,6 @@ print do
           :value   => [150, 640]
           
             
-  background 2, File.expand_path(File.join(File.dirname(__FILE__), 'spec', 'fixtures', 'example-bg.pdf'))
+  back 1..2, 'spec/fixtures/example-bg.pdf'
 
 end
