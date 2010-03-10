@@ -23,7 +23,15 @@
       <b>dpi:</b>
       <input type="text" id="dpi" value="72" />
     </p>
+    
+    <p>
+      <b>page:</b>
+      <input type="text" id="page" value="1" />
+    </p>
+    
     <p id="log"></p>
+    
+    <ul id="coords" style="list-style:none;margin:0;padding:0"></ul>
     <img src="background.png" alt="background" id="measure" />
     <script type="text/javascript">
       jQuery(function($){
@@ -41,6 +49,16 @@
           y = parseInt((pxHeight - e.pageY) * dpiRatio)
           
           $("#log").text("x: " + x + ", y: " + y); 
+        });
+        
+        $('#measure').click(function(){
+          attribute = prompt('What is the attribute for ' + x + ' x ' + y + '?')
+          if (attribute) {
+            var coord = ':' + attribute + ' => [' + x + ', ' + y + ']'
+            var $li   = $('<li>')
+            $li.html(coord)
+            $('#coords').append($li)
+          }
         });
       });
     </script>
