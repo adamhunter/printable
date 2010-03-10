@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), '..', 'lib', 'receipt')
+require File.join(File.dirname(__FILE__), '..', 'lib', 'printable')
 require 'spec/autorun'
 
 require 'fixtures/example'

@@ -1,21 +1,15 @@
-module Receipt
+module Printable
   class Printer
-  
-    def self.print(printee, path)
-      raise PaperJam.new("There is no receipt template at #{path}. Load paper in tray 1 and press resume.") unless FileTest.exists?(path)
-      new(printee, &eval(File.read(path)))
-    end
-    
-    def self.receipt(&block)
-      block
-    end
     
     attr_accessor :printee
     
-    def initialize(printee, &block)
+    def initialize(printee, path)
       @backgrounds, @pages, @basepath, @printee = {}, {}, '.', printee
-      instance_exec(&block)
-      print
+      load_template(path) unless path.nil?
+    end
+    
+    def printable(&block)
+      block.call
     end
     
     def background(*args)
@@ -39,9 +33,7 @@ module Receipt
       merge_pages!
       clean_pages!
     end
-   
-    class PaperJam < StandardError ; end
-    class CommandFailed < StandardError ; end
+    
     
     protected
     
@@ -82,10 +74,23 @@ module Receipt
         File.join(@basepath, "temp#{file_name(page_no)}")
       end
       
-      # todo: specify path to bin
       def run(command)
-        `pdftk #{command}`
-        raise CommandFailed.new("Command: `pdftk #{command}` failed with status #{$?}.") unless $?.to_i.zero?
+        `#{execute = "#{bin} #{command} > #{logger}"}`
+        raise PaperJam.new("Command: `#{execute}` failed with status #{$?}.") unless $?.to_i.zero?
+      end
+      
+      def bin
+        "#{Printable.options[:command_path]}pdftk"
+      end
+      
+      def logger
+        Printable.options[:command_logger]
+      end
+      
+      def load_template(path)
+        path = File.expand_path(path)
+        raise OutOfPaper.new("There is no printable template at #{path}. Load paper in tray 1 and press resume.") unless FileTest.exists?(path)
+        eval(File.read(path))
       end
     
     private
@@ -93,6 +98,9 @@ module Receipt
       def extract_pagenumber(args)
         args.size == 1 ? [1, args[0]] : [args[0], args[1]]
       end
+      
+    class PaperJam < StandardError ; end
+    class OutOfPaper < StandardError ; end
     
   end
 end

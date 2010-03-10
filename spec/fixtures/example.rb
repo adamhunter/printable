@@ -1,6 +1,6 @@
 class Example
   
-  prints_receiept
+  acts_as_printable
   
   def id
     125

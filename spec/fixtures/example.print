@@ -1,4 +1,4 @@
-receipt do
+printable do
   
   base 'pdfs'
 

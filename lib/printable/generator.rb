@@ -2,7 +2,7 @@ require 'rubygems'
 require 'sinatra/base'
 require 'erb'
 
-module Receipt
+module Printable
   class Generator < Sinatra::Base
     
     dir = File.dirname(File.expand_path(__FILE__))
