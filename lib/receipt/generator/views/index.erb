@@ -29,12 +29,43 @@
       <input type="text" id="page" value="1" />
     </p>
     
+    <button id="export">Export</button>
+    
     <p id="log"></p>
     
-    <ul id="coords" style="list-style:none;margin:0;padding:0"></ul>
+    <pre>
+      <ul id="coords" style="list-style:none;margin:0;padding:0"></ul>
+    </pre>
+    
+    
     <img src="background.png" alt="background" id="measure" />
     <script type="text/javascript">
       jQuery(function($){
+        var findLongest = function(){
+          var longest, length;
+          longest = 0;
+          $('#coords li').each(function(i){
+            length = $(this).find('span').text().length;
+            longest = length > longest ? length : longest;
+          })
+          return longest
+        }
+        
+        var addPadding = function(){
+          var length, text, $span;
+          length = findLongest();
+          $('#coords li').each(function(i){
+            $span = $(this).find('span');
+            text  = $span.text();
+            while(text.length < length) {
+              text += ' '
+            }
+            text = text.replace(/\s/g, '&nbsp;');
+            $span.html(text);
+          });
+        }
+        
+        
         $('#measure').load(function(){
           pxHeight = $('#measure').height()
           pxWidth  = $('#measure').width()
@@ -54,10 +85,11 @@
         $('#measure').click(function(){
           attribute = prompt('What is the attribute for ' + x + ' x ' + y + '?')
           if (attribute) {
-            var coord = ':' + attribute + ' => [' + x + ', ' + y + ']'
+            var coord = '<span>:' + attribute + '</span> => [' + x + ', ' + y + ']'
             var $li   = $('<li>')
             $li.html(coord)
             $('#coords').append($li)
+            addPadding();
           }
         });
       });
