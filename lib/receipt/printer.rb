@@ -59,7 +59,7 @@ module Receipt
       end
       
       def clean_pages!
-        FileUtils.rm_r @pages.keys.collect { |page_no| [temp_file_path(page_no), file_path(page_no)] }.flatten
+        FileUtils.rm_rf @pages.keys.collect { |page_no| [temp_file_path(page_no), file_path(page_no)] }.flatten
       end
       
       def print_page(page)
