@@ -10,8 +10,12 @@ describe Printable::InstanceMethods do
     Example.new.should respond_to(:print)
   end
   
+  it "should add a printer onto new instances of the object" do
+    Example.new.printer(nil).should be_a(Printable::Printer)
+  end
+  
   it "should call print on the Receipt::Printer" do
-    Receipt::Printer.stub!(:new).and_return(@mock = mock(:print => true))
+    Printable::Printer.stub!(:new).and_return(@mock = mock(:print => true))
     @mock.should_receive(:print)
     Example.new.print
   end

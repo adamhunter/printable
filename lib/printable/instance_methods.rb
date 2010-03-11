@@ -3,7 +3,11 @@ module Printable
     
     def print(path = nil)
       path ||= File.join(File.dirname(__FILE__), "#{self.class.name.downcase}.print")
-      Printable::Printer.new(self, path).print
+      printer(path).print
+    end
+    
+    def printer(path)
+      Printable::Printer.new(self, path)
     end
     
   end

@@ -7,8 +7,8 @@ describe Printable do
   end
   
   it "should allow its options to be changed" do
-    Printable.options[:command_path] = 'other/path'
-    Printable.options[:command_path].should == 'other/path'
+    Printable.options[:some_option] = 'other/path'
+    Printable.options[:some_option].should == 'other/path'
   end
   
 end

@@ -6,6 +6,10 @@ class Example
     125
   end
   
+  def memo
+    Memo.new
+  end
+  
   def attributes
     {
       :name    => 'Receipt Example',
@@ -23,5 +27,17 @@ class Example
     attributes[method_name] ? attributes[method_name] : super
   end
   
+  def print_test_page
+    stub!(:printer).and_return(mock_printer(self))
+    print
+  end
+  
 end
 
+class Memo
+  
+  def note
+    'This is a note!'
+  end
+  
+end

@@ -1,7 +1,7 @@
 module Printable
   class Printer
     
-    attr_accessor :printee
+    attr_accessor :printee, :pages, :backgrounds, :basepath
     
     def initialize(printee, path)
       @backgrounds, @pages, @basepath, @printee = {}, {}, '.', printee
@@ -39,9 +39,7 @@ module Printable
     
       def print_pages!
         @pages.each_pair do |page_no, page|
-          pdf = print_page(page)
-          pdf.render_file temp_file_path(page_no)
-          run "#{temp_file_path(page_no)} background #{File.expand_path(@backgrounds[page_no])} output #{file_path(page_no)}"
+          print_page! page_no, draw_page(page)
         end
       end
       
@@ -54,20 +52,35 @@ module Printable
         FileUtils.rm_rf @pages.keys.collect { |page_no| [temp_file_path(page_no), file_path(page_no)] }.flatten
       end
       
-      def print_page(page)
+      def print_page!(page_no, pdf)
+        background = @backgrounds[page_no]      
+        pdf.render_file file_path(page_no)
+        run "#{temp_file(page_no)} background #{File.expand_path(background)} output #{file_path(page_no)}" if background
+      end
+
+      def draw_page(page)
         pdf = Prawn::Document.new(:margin => 0)
         page.each_pair do |attr, at|
-          pdf.draw_text @printee.send(attr), :at => at
+          pdf.draw_text attribute_value(attr), :at => at
         end
         pdf
       end
       
+      def attribute_value(attr)
+        Array(attr).inject(@printee) { |obj, method| obj = obj.send(method.to_sym) }
+      end
+
       def file_name(page_no)
         "#{page_no}#{printee.class.name.downcase}-#{printee.id}.pdf"
       end
       
       def file_path(page_no = nil)
         File.join(@basepath, file_name(page_no))
+      end
+      
+      def temp_file(page_no)
+        FileUtils.cp file_path(page_no), temp_file_path(page_no)
+        temp_file_path(page_no)
       end
       
       def temp_file_path(page_no)
